@@ -207,3 +207,85 @@ footer { text-align: center; padding: 50px 0; margin-top: 50px; }
 
 /* ... (add responsive media queries from previous version) */
 @media (max-width: 768px) { main { padding: 0 8%; } .about-container { flex-direction: column; } .avatar { width: 150px; height: 150px; margin-bottom: 30px; } }
+
+/* =================================== */
+/* ==== RESPONSIVE DESIGN STYLES ==== */
+/* =================================== */
+
+/* This applies to all screens smaller than 768px (tablets and phones) */
+@media (max-width: 768px) {
+
+    /* --- General Layout & Spacing --- */
+    main {
+        /* Reduces the side padding to give more room */
+        padding: 0 8%;
+    }
+
+    section {
+        /* Reduces the top/bottom padding between sections */
+        padding: 80px 0;
+    }
+
+    /* --- Header & Navigation --- */
+    header {
+        padding: 15px 20px;
+    }
+
+    /* Note: For a true mobile menu, a "hamburger" icon with JavaScript is
+       needed. For now, this is a simple adjustment. The nav links might
+       still wrap on very small screens. */
+
+
+    /* --- Hero Section Font Sizes --- */
+    .headline {
+        /* Makes the main "Sayana Thavanut" title smaller */
+        font-size: 2.8rem;
+    }
+
+    .sub-headline {
+        /* Makes the "AI Engineer..." subtitle smaller */
+        font-size: 1.5rem;
+        min-height: 80px; /* Gives more space for the typing effect */
+    }
+    
+    .hero-buttons {
+        /* Stacks the buttons vertically */
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .btn-secondary {
+        margin-left: 0;
+    }
+
+
+    /* --- 'About Me' Section Layout --- */
+    .about-container {
+        /* Stacks the avatar and text vertically instead of side-by-side */
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .avatar {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 30px; /* Adds space between avatar and text */
+    }
+
+
+    /* --- Project Modal Adjustments --- */
+    .modal-content {
+        width: 90%;
+        padding: 25px;
+    }
+
+    .modal-title {
+        font-size: 1.8rem;
+    }
+
+    .modal-title span {
+        font-size: 1.2rem;
+    }
+}
