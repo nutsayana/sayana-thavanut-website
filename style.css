@@ -17,6 +17,8 @@ nav { display: flex; justify-content: space-between; align-items: center; }
 
 /* This is the main style for the circle and text */
 /* Find your existing .logo style and add the new line */
+/* ==== START: Corrected Monogram Logo Style ==== */
+
 .logo {
     width: 48px;
     height: 48px;
@@ -29,17 +31,18 @@ nav { display: flex; justify-content: space-between; align-items: center; }
     font-size: 1.1rem;
     font-weight: 700;
     font-family: var(--font-primary);
+    /* This makes the hover effect smooth */
     transition: background-color 0.3s ease, color 0.3s ease;
-    text-decoration: none; /* ADD THIS LINE to remove the underline */
+    text-decoration: none;
 }
 
-/* This creates the professional hover effect */
+/* This is the corrected, single hover effect */
 .logo:hover {
-    
-   background-color: var(--primary-color); /* Fills the circle with neon cyan */
-    color: var(--bg-color); /* Makes the "ST" text dark, matching the site background */
-    box-shadow: 0 0 15px var(--primary-color);
+    background-color: var(--primary-color); /* Fills the circle */
+    color: var(--bg-color); /* Inverts the text color */
 }
+
+/* ==== END: Corrected Monogram Logo Style ==== */
 
 /* ==== END: New Monogram Logo Style ==== */
 .nav-links { list-style: none; display: flex; gap: 25px; }
