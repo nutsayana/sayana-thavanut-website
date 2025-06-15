@@ -16,25 +16,21 @@ nav { display: flex; justify-content: space-between; align-items: center; }
 /* ==== START: New Monogram Logo Style ==== */
 
 /* This is the main style for the circle and text */
+/* Find your existing .logo style and add the new line */
 .logo {
     width: 48px;
     height: 48px;
-    border-radius: 50%; /* This makes the div a perfect circle */
-    border: 2px solid var(--primary-color); /* The neon cyan border */
-    color: var(--primary-color); /* The color of the "ST" text */
-    
-    /* These next lines perfectly center the text inside the circle */
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
     display: flex;
     justify-content: center;
     align-items: center;
-
-    /* Font styling */
-    font-size: 1.1rem; 
+    font-size: 1.1rem;
     font-weight: 700;
     font-family: var(--font-primary);
-
-    /* This makes the hover effect smooth */
     transition: background-color 0.3s ease, color 0.3s ease;
+    text-decoration: none; /* ADD THIS LINE to remove the underline */
 }
 
 /* This creates the professional hover effect */
