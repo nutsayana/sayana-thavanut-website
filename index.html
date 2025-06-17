@@ -8,7 +8,7 @@
     
     <title>Sayana Thavanut | AI/Engineering & Data Science Student</title>
     
-    <link rel="icon" type="image/png" href="url logo.png">
+    <link rel="icon" type="image/png" href="nuclear-sign.png">
 
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -81,7 +81,15 @@
                         <span class="view-details">View Details</span>
                     </div>
                 </div>
+                <div class="project-card" id="project-2" data-aos="fade-up" data-aos-delay="100">
+                    <img src="image/logo13.jpg" alt="AdventureWorks SQL Analysis">
+                    <div class="project-info">
+                        <h3>AdventureWorks SQL Analysis</h3>
+                        <p>Comprehensive SQL data analysis using advanced queries to generate 15 business intelligence reports.</p>
+                        <span class="view-details">View Details</span>
+                    </div>
                 </div>
+            </div>
         </section>
 
         <section id="experience" class="experience-section">
@@ -102,6 +110,9 @@
                 <a href="tel:+85510438537"><i class="fas fa-phone"></i></a>
                 <a href="https://github.com/your-github-username" target="_blank"><i class="fab fa-github"></i></a>
                 <a href="https://www.linkedin.com/in/your-linkedin-profile" target="_blank"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <div class="last-updated">
+                <p>Last updated: 2025-06-16 20:04:38 by nutsayana</p>
             </div>
         </div>
     </footer>
@@ -143,7 +154,204 @@
                     <h4>5. Proportion of Female Laureates by Category</h4>
                     <p>A stacked bar chart revealed the proportion of female winners in each category over the decades, highlighting when and in which fields female representation began to grow.</p>
                      <img src="image/female_proportion_decade.png" alt="Female Winners Proportion by Decade Chart" class="chart-image">
-    </div>  
+                </div>  
+            </div>
+        </div>
+    </div>
+
+    <div id="reporting-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>AdventureWorks SQL Analysis<br><span>Advanced SQL Reporting Project</span></h2>
+            <div class="modal-body">
+                <div class="project-summary">
+                    <p>This comprehensive SQL project involved analyzing the AdventureWorks database to extract valuable business insights. Using advanced SQL techniques including joins, subqueries, Common Table Expressions (CTEs), window functions, and aggregations, I created 15 detailed reports to support data-driven decision-making across sales, marketing, and management departments.</p>
+                </div>
+                <h3>Tools Used:</h3>
+                <ul class="tools-list">
+                    <li>SQL Server</li><li>Advanced SQL Queries</li><li>CTEs</li><li>Window Functions</li><li>Data Analysis</li>
+                </ul>
+                <h3>Key Reports Developed:</h3>
+                <div class="finding">
+                    <h4>1. Sales Performance Analysis</h4>
+                    <p>Created reports identifying the top 10 best-selling products based on revenue and quantity sold. Extended this analysis to find the top 10 products within each product category, using complex joins across multiple tables and window functions for ranking.</p>
+                    <div class="code-container">
+                        <div class="code-snippet" id="code-1">WITH ProductRankByCategory AS (
+    SELECT
+        pc.Name AS [Product Category],
+        p.Name AS [Product Name],
+        SUM(sod.LineTotal) AS [Total Sales Revenue],
+        SUM(sod.OrderQty) AS [Total Quantity Sold],
+        ROW_NUMBER() OVER (
+            PARTITION BY pc.Name ORDER BY SUM(sod.LineTotal) DESC) AS [Product Rank]
+    FROM Sales.SalesOrderDetail AS sod
+    INNER JOIN Production.Product AS p
+        ON sod.ProductID = P.ProductID
+    INNER JOIN Production.ProductSubcategory AS ps
+        ON p.ProductSubcategoryID = ps.ProductSubcategoryID
+    INNER JOIN Production.ProductCategory AS pc
+        ON ps.ProductCategoryID = pc.ProductCategoryID
+    GROUP BY pc.Name, p.Name
+)
+SELECT 
+    [Product Category],
+    [Product Name],
+    [Total Sales Revenue],
+    [Total Quantity Sold]
+FROM ProductRankByCategory
+WHERE [Product Rank] <= 10
+ORDER BY [Product Category], [Total Sales Revenue] DESC;</div>
+                    </div>
+                </div>
+                <div class="finding">
+                    <h4>2. Time-Series Analysis</h4>
+                    <p>Developed monthly sales trend reports using date manipulation functions to track revenue fluctuations throughout the year. Implemented month-over-month growth rate calculations using window functions to identify sales patterns and seasonal trends.</p>
+                    <div class="code-container">
+                        <div class="code-snippet" id="code-2">WITH MonthlySales AS (
+    SELECT 
+        DATEPART(YEAR, OrderDate) AS [Year],
+        DATEPART(MONTH, OrderDate) AS [MonthNumber],
+        SUM(TotalDue) AS [Sales]
+    FROM Sales.SalesOrderHeader
+    GROUP BY 
+        DATEPART(YEAR, OrderDate),
+        DATEPART(MONTH, OrderDate)
+),
+SalesGrowth AS (
+    SELECT 
+        [Year],
+        [MonthNumber],
+        [Sales],
+        LAG([Sales]) OVER (ORDER BY [Year], [MonthNumber]) AS [PreviousSales]
+    FROM MonthlySales
+)
+SELECT 
+    FORMAT(DATEFROMPARTS([Year], [MonthNumber], 1), 'MMMM yyyy') AS [Month],
+    [Sales],
+    ROUND(
+        CASE 
+            WHEN [PreviousSales] IS NULL THEN 0
+            ELSE (([Sales] - [PreviousSales]) / [PreviousSales]) * 100 
+        END, 2) AS [Growth %]
+FROM SalesGrowth
+ORDER BY [Year] ASC, [MonthNumber] ASC;</div>
+                    </div>
+                </div>
+                <div class="finding">
+                    <h4>3. Customer Value & Segmentation</h4>
+                    <p>Created reports identifying customers with the highest lifetime value and analyzed customer purchasing frequency. Implemented RFM (Recency, Frequency, Monetary) analysis to segment customers for targeted marketing strategies.</p>
+                    <div class="code-container">
+                        <div class="code-snippet" id="code-3">WITH HighValueCustomers AS (
+    SELECT
+        CONCAT(p.FirstName, ' ', p.LastName) AS [Customer Name],
+        DATEDIFF(DAY, MAX(soh.OrderDate),
+        (SELECT MAX(OrderDate)
+        FROM Sales.SalesOrderHeader)) AS [Recency (Days since last order)],
+        COUNT(soh.SalesOrderID) AS [Frequency (Total Orders)],
+        SUM(soh.TotalDue) AS [Monetary (Total Spend)]
+    FROM Sales.Customer AS c
+    LEFT JOIN Person.Person AS p 
+        ON c.PersonID = p.BusinessEntityID
+    INNER JOIN Sales.SalesOrderHeader AS soh 
+        ON c.CustomerID = soh.CustomerID
+    GROUP BY c.CustomerID, p.FirstName, p.LastName
+)
+SELECT 
+    [Customer Name],
+    [Recency (Days since last order)],
+    [Frequency (Total Orders)],
+    [Monetary (Total Spend)] 
+FROM HighValueCustomers
+ORDER BY 
+    [Monetary (Total Spend)] DESC,
+    [Frequency (Total Orders)] DESC,
+    [Recency (Days since last order)] ASC;</div>
+                    </div>
+                </div>
+                <div class="finding">
+                    <h4>4. Geographic Performance</h4>
+                    <p>Identified the most profitable sales regions and analyzed the top 3 products by revenue in each sales territory, providing insights for regional sales strategies and inventory management.</p>
+                    <div class="code-container">
+                        <div class="code-snippet" id="code-4">WITH ProductRevenueByTerritory AS (
+    SELECT 
+        st.Name AS [Sales Territory Region Name],
+        p.Name AS [Product Name],
+        SUM(sod.LineTotal) AS [Revenue]
+    FROM Sales.SalesOrderDetail AS sod
+    INNER JOIN Sales.SalesOrderHeader AS soh
+        ON sod.SalesOrderID = soh.SalesOrderID
+    INNER JOIN Sales.SalesTerritory AS st
+        ON soh.TerritoryID = st.TerritoryID
+    INNER JOIN Production.Product AS p
+        ON sod.ProductID = p.ProductID
+    GROUP BY st.Name, p.Name
+),
+RankProducts AS (
+    SELECT 
+        [Sales Territory Region Name],
+        [Product Name],
+        [Revenue],
+        ROW_NUMBER() OVER (
+            PARTITION BY [Sales Territory Region Name] 
+            ORDER BY [Revenue] DESC
+        ) AS [Rank (Top 3) within Territory]
+    FROM ProductRevenueByTerritory
+)
+SELECT 
+    [Sales Territory Region Name],
+    [Product Name],
+    [Revenue],
+    [Rank (Top 3) within Territory]
+FROM RankProducts
+WHERE [Rank (Top 3) within Territory] <= 3
+ORDER BY [Sales Territory Region Name], [Rank (Top 3) within Territory];</div>
+                    </div>
+                </div>   
+                <div class="finding">
+                    <h4>5. Employee Analysis</h4>
+                    <p>Developed reports on employee tenure and sales performance rankings, using date functions and window functions to calculate years of service and rank employees based on sales achievements.</p>
+                    <div class="code-container">
+                        <div class="code-snippet" id="code-5">WITH SalesPerformance AS (
+    SELECT 
+        CONCAT(p.FirstName, ' ', p.LastName) AS [Employee Name],
+        sp.SalesYTD AS [Total Sales]
+    FROM Sales.SalesPerson AS sp
+    INNER JOIN Person.Person AS P
+        ON sp.BusinessEntityID = P.BusinessEntityID	
+)
+SELECT 
+    [Employee Name],
+    [Total Sales],
+    RANK() OVER (ORDER BY [Total Sales] DESC) AS [Rank]
+FROM SalesPerformance;</div>
+                    </div>
+                </div>
+                <div class="finding">
+                    <h4>6. Customer Retention & Growth</h4>
+                    <p>Created reports analyzing customer retention, identifying customers who haven't purchased in the last year, and tracking monthly revenue and customer growth trends to support targeted marketing campaigns.</p>
+                    <div class="code-container">
+                        <div class="code-snippet" id="code-6">WITH LastOrders AS (
+    SELECT 
+        CONCAT(p.FirstName, ' ', p.LastName) AS [Customer Name],
+        MAX(OrderDate) AS [Last Order Date]
+    FROM [Sales].[Customer] AS c
+    LEFT JOIN Person.Person AS p
+        ON c.PersonID = p.BusinessEntityID
+    INNER JOIN Sales.SalesOrderHeader AS soh
+        ON c.CustomerID = soh.CustomerID
+    GROUP BY c.CustomerID, p.FirstName, p.LastName
+)
+SELECT 
+    [Customer Name],
+    l.[Last Order Date]
+FROM LastOrders AS l
+WHERE l.[Last Order Date] < (
+    SELECT DATEADD(YEAR, -1, MAX(OrderDate)) 
+    FROM Sales.SalesOrderHeader
+)
+ORDER BY l.[Last Order Date] DESC;</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
